@@ -224,6 +224,8 @@ const RootLayoutNav = () => {
   // Check if we have a valid Clerk key (starts with pk_test_ or pk_live_)
   const hasValidClerkKey = CLERK_PUBLISHABLE_KEY && 
     (CLERK_PUBLISHABLE_KEY.startsWith('pk_test_') || CLERK_PUBLISHABLE_KEY.startsWith('pk_live_'));
+  
+  const router = useRouter();
 
   if (!hasValidClerkKey) {
     // Run without Clerk authentication for demo purposes
@@ -262,7 +264,7 @@ const RootLayoutNav = () => {
                 headerLargeTitle: true,
                 headerTransparent: true,
                 headerLeft: () => (
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => router.back()}>
                     <Ionicons name="arrow-back" size={24} color={Colors.dark} />
                   </TouchableOpacity>
                 ),
@@ -276,7 +278,7 @@ const RootLayoutNav = () => {
                 title: "",
                 headerTransparent: true,
                 headerLeft: () => (
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => router.back()}>
                     <Ionicons name="close-outline" size={34} color={Colors.white} />
                   </TouchableOpacity>
                 ),
