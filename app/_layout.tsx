@@ -251,6 +251,37 @@ const RootLayoutNav = () => {
                 headerStyle: { backgroundColor: Colors.background },
               }}
             />
+            <Stack.Screen
+              name="(authenticated)/(tabs)"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="(authenticated)/crypto/[id]"
+              options={{
+                title: "",
+                headerLargeTitle: true,
+                headerTransparent: true,
+                headerLeft: () => (
+                  <TouchableOpacity>
+                    <Ionicons name="arrow-back" size={24} color={Colors.dark} />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="(authenticated)/(modals)/account"
+              options={{
+                presentation: "transparentModal",
+                animation: "fade",
+                title: "",
+                headerTransparent: true,
+                headerLeft: () => (
+                  <TouchableOpacity>
+                    <Ionicons name="close-outline" size={34} color={Colors.white} />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
           </Stack>
         </GestureHandlerRootView>
       </QueryClientProvider>
