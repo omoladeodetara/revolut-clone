@@ -16,7 +16,8 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
 // Only import on native platforms
-let setAppIcon: any, getAppIcon: any;
+let setAppIcon: ((name: string) => Promise<void>) | undefined;
+let getAppIcon: (() => Promise<string>) | undefined;
 if (Platform.OS !== 'web') {
   const AppIcon = require("expo-dynamic-app-icon");
   setAppIcon = AppIcon.setAppIcon;
