@@ -221,6 +221,75 @@ const InitialLayout = () => {
 };
 
 const RootLayoutNav = () => {
+  // Check if we have a valid Clerk key (starts with pk_test_ or pk_live_)
+  const hasValidClerkKey = CLERK_PUBLISHABLE_KEY && 
+    (CLERK_PUBLISHABLE_KEY.startsWith('pk_test_') || CLERK_PUBLISHABLE_KEY.startsWith('pk_live_'));
+  
+  const router = useRouter();
+
+  if (!hasValidClerkKey) {
+    // Run without Clerk authentication for demo purposes
+    return (
+      <QueryClientProvider client={queryClient}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <StatusBar style="light" />
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="signup"
+              options={{
+                title: "",
+                headerBackTitle: "",
+                headerShadowVisible: false,
+                headerStyle: { backgroundColor: Colors.background },
+              }}
+            />
+            <Stack.Screen
+              name="login"
+              options={{
+                title: "",
+                headerBackTitle: "",
+                headerShadowVisible: false,
+                headerStyle: { backgroundColor: Colors.background },
+              }}
+            />
+            <Stack.Screen
+              name="(authenticated)/(tabs)"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="(authenticated)/crypto/[id]"
+              options={{
+                title: "",
+                headerLargeTitle: true,
+                headerTransparent: true,
+                headerLeft: () => (
+                  <TouchableOpacity onPress={() => router.back()}>
+                    <Ionicons name="arrow-back" size={24} color={Colors.dark} />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="(authenticated)/(modals)/account"
+              options={{
+                presentation: "transparentModal",
+                animation: "fade",
+                title: "",
+                headerTransparent: true,
+                headerLeft: () => (
+                  <TouchableOpacity onPress={() => router.back()}>
+                    <Ionicons name="close-outline" size={34} color={Colors.white} />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
+          </Stack>
+        </GestureHandlerRootView>
+      </QueryClientProvider>
+    );
+  }
+
   return (
     <ClerkProvider
       publishableKey={CLERK_PUBLISHABLE_KEY!}

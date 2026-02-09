@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Image,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -13,7 +14,15 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import Colors from "@/constants/Colors";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { setAppIcon, getAppIcon } from "expo-dynamic-app-icon";
+
+// Only import on native platforms
+let setAppIcon: ((name: string) => Promise<void>) | undefined;
+let getAppIcon: (() => Promise<string>) | undefined;
+if (Platform.OS !== 'web') {
+  const AppIcon = require("expo-dynamic-app-icon");
+  setAppIcon = AppIcon.setAppIcon;
+  getAppIcon = AppIcon.getAppIcon;
+}
 
 const ICONS = [
   {
@@ -45,9 +54,11 @@ const Account = () => {
 
   useEffect(() => {
     const loadCurrentIconPref = async () => {
-      const icon = await getAppIcon();
-      console.log("🚀 ~ loadCurrentIconPref ~ icon:", icon);
-      setActiveIcon(icon);
+      if (Platform.OS !== 'web' && getAppIcon) {
+        const icon = await getAppIcon();
+        console.log("🚀 ~ loadCurrentIconPref ~ icon:", icon);
+        setActiveIcon(icon);
+      }
     };
     loadCurrentIconPref();
   }, []);
@@ -86,8 +97,10 @@ const Account = () => {
   };
 
   const onChangeAppIcon = async (icon: string) => {
-    await setAppIcon(icon.toLowerCase());
-    setActiveIcon(icon);
+    if (Platform.OS !== 'web' && setAppIcon) {
+      await setAppIcon(icon.toLowerCase());
+      setActiveIcon(icon);
+    }
   };
 
   return (
